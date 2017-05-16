@@ -29,12 +29,12 @@ export default (opt = {}) => {
 			let hash = '';
 
 			if (dest) {
-				// relative(__dirname, dest) will not be equal to dest when dest is a absolute path
-				destPath = relative(__dirname, dest);
+				// relative('./', dest) will not be equal to dest when dest is a absolute path
+				destPath = relative('./', dest);
 			} else if (targets) {
 				for (let i = 0; i < targets.length; i++) {
 					if (format === targets[i].format) {
-						destPath = relative(__dirname, targets[i].dest);
+						destPath = relative('./', targets[i].dest);
 					}
 				}
 			}
