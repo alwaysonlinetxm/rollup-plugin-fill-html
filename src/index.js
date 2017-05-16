@@ -1,4 +1,4 @@
-import { statSync, readFileSync, writeFileSync, readdirSync, existsSync, unlinkSync } from 'fs';
+import { statSync, readFileSync, writeFileSync, readdirSync, unlinkSync } from 'fs';
 import { relative, basename  } from 'path';
 import hasha from 'hasha';
 
@@ -29,10 +29,10 @@ export default (opt = {}) => {
 			let hash = '';
 
 			if (dest) {
-				 // relative(__dirname, dest) will not be equal to dest when dest is a absolute path
+				// relative(__dirname, dest) will not be equal to dest when dest is a absolute path
 				destPath = relative(__dirname, dest);
 			} else if (targets) {
-				for (const i = 0; i < targets.length; i++) {
+				for (let i = 0; i < targets.length; i++) {
 					if (format === targets[i].format) {
 						destPath = relative(__dirname, targets[i].dest);
 					}
@@ -55,6 +55,7 @@ export default (opt = {}) => {
 			traverse(firstDir, jsList, hash);
 
 			const scripts = jsList.map(node => {
+				// just add the latest file
 				if (node.indexOf(hash) !== -1) {
 					return `<script type="text/javascript" src="${relative(firstDir, node)}"></script>\n`;
 				}
@@ -62,7 +63,6 @@ export default (opt = {}) => {
 			}).join('');
 			const content = `${file.slice(0, index)}${scripts}${file.slice(index)}`;
 
-			existsSync(destFile) && unlinkSync(destFile);
 			writeFileSync(destFile, content);
 		}
 	};
