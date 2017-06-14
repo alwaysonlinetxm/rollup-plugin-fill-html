@@ -30,6 +30,22 @@ export default {
 ```
 and then a index.html file will be created in the dest directory(where the bundle file will be).
 
+## Hash
+
+With `rollup-plugin-fill-html`, you can set a format string which with '[hash]' for the dest in rollup.config.js, just like:
+
+```JavaScript
+export default {
+  entry: 'src/index.js',
+  dest: 'dist/bundle-[hash].js',
+  plugins: [
+    ...
+  ]
+};
+```
+
+and then, you will get `bundle-a3965c0c77a63d7c74b57222e2f74028.js` in your dist directory.
+
 ## Options
 
 You can pass an option to the `html()` just like above, and there are some options:
