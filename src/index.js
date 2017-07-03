@@ -1,5 +1,5 @@
 import { statSync, readFileSync, writeFileSync, readdirSync, unlinkSync } from 'fs';
-import { relative, basename  } from 'path';
+import { relative, basename, sep as pathSeperator } from 'path';
 import hasha from 'hasha';
 
 function traverse(dir, list) {
@@ -48,7 +48,7 @@ export default (opt = {}) => {
 				writeFileSync(destPath, data.code += `//# sourceMappingURL=${basename(dest)}.map`);
 			}
 
-			const firstDir = destPath.slice(0, destPath.indexOf('/'));
+			const firstDir = destPath.slice(0, destPath.indexOf(pathSeperator));
 			const destFile = `${firstDir}/${filename || basename(template)}`;
 			const index = file.indexOf('</body>');
 
