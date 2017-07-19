@@ -2,6 +2,10 @@
 
 Fill the html template with the bundle js..
 
+## Note
+
+The 1.0.3 version has been supported to insert css file and external url, you should know that rollup-plugin-fill-html will scan the dest directory and find out the bundl js and `all the css files`, and then into the result html. So you'd better to clean the dest directory before rebuilding, and I think you may need [this](https://github.com/alwaysonlinetxm/rollup-plugin-clean) .
+
 ## Installation
 
     yarn add --dev rollup-plugin-fill-html
@@ -53,6 +57,8 @@ You can pass an option to the `html()` just like above, and there are some optio
 - template: Required. the path of the template file, it should be a html file.
 - filename: Optional. the name of the result html file, if omitted, the template name will be used.
 - format: Optional. when the rollup.config.js use field 'target', then you need to set the format to choose which bundle should be inserted into the result file.
+- externals: Optional. a list of files which will be insert into the resule html. The file should be a valid url.
+
 
 demo:
 
@@ -70,7 +76,11 @@ export default {
     html({
       template: 'src/index.html',
       filename: 'index.html',
-      format: 'es'
+      format: 'es',
+      externals: [
+        { type: 'js', file: '//www.test.pajkdc.com/hybridjs/pajk_hybrid_index.0.1.4.js' },
+        { type: 'js', file: '//beacon.test.pajkdc.com/js/beacon.js' }
+      ]
     })
   ]
 };
