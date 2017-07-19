@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-fill-html",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "fill html with the bundle file",
   "main": "dist/index.cjs.js",
   "module": "dist/index.es.js",

@@ -10,23 +10,28 @@ function traverse(dir, list) {
 			traverse(file, list);
 		} else {
 			if (/\.js$/.test(file)) {
-				list.push(file);
+				list.push({ type: 'js', file });
+			} else if (/\.css$/.test(file)) {
+				list.push({ type: 'css', file });
 			}
 		}
 	});
 }
 
+function isURL(url){
+  return /^(((https|http|ftp|rtsp|mms):)?\/\/)+[A-Za-z0-9]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"\"])*$/.test(url);
+}
+
 export default (opt = {}) => {
-	const { template, filename, format } = opt;
+	const { template, filename, format, externals } = opt;
 
 	return {
 		name: 'html',
 		onwrite(config, data) {
-			const jsList = [];
-			const file = readFileSync(template).toString();
+			const tpl = readFileSync(template).toString();
 			const { dest, targets } = config;
+			const fileList = [];
 			let destPath = '';
-			let hash = '';
 
 			if (dest) {
 				// relative('./', dest) will not be equal to dest when dest is a absolute path
@@ -38,30 +43,48 @@ export default (opt = {}) => {
 					}
 				}
 			}
-			// has set hash
-			if (/\[hash\]/.test(destPath)) {
-				hash = hasha(data.code, { algorithm: 'md5' });
-				// remove the file without hash
-				unlinkSync(destPath);
-				destPath = destPath.replace('[hash]', hash);
-				// data.code will remove the last line of the source code(//# sourceMappingURL=xxx), so it's need to add this
-				writeFileSync(destPath, data.code += `//# sourceMappingURL=${basename(dest)}.map`);
-			}
 
 			const firstDir = destPath.slice(0, destPath.indexOf(pathSeperator));
-			const destFile = `${firstDir}/${filename || basename(template)}`;
-			const index = file.indexOf('</body>');
+			const destFile = `${firstDir}/${filename || basename(tpl)}`;
+			const headIndex = tpl.indexOf('</head>');
+			const bodyIndex = tpl.indexOf('</body>');
+			const jsList = [];
+			const cssList = [];
 
-			traverse(firstDir, jsList, hash);
+			traverse(firstDir, fileList);
 
-			const scripts = jsList.map(node => {
-				// just add the latest file
-				if (node.indexOf(hash) !== -1) {
-					return `<script type="text/javascript" src="${relative(firstDir, node)}"></script>\n`;
+			if (Array.isArray(externals)) {
+				fileList.splice(fileList.length, 0, ...externals);
+			}
+
+			fileList.forEach(node => {
+				let { type, file } = node;
+				let hash = '';
+				let code = '';
+
+				if (/\[hash\]/.test(file)) {
+					if (file === destPath) {
+						// data.code will remove the last line of the source code(//# sourceMappingURL=xxx), so it's needed to add this
+						code = data.code + `//# sourceMappingURL=${basename(file)}.map`;
+					} else {
+						code = readFileSync(file).toString();
+					}
+					hash = hasha(code, { algorithm: 'md5' });
+					// remove the file without hash
+					unlinkSync(file);
+					file = file.replace('[hash]', hash)
+					writeFileSync(file, code);
 				}
-				return '';
-			}).join('');
-			const content = `${file.slice(0, index)}${scripts}${file.slice(index)}`;
+
+				const src = isURL(file) ? file : relative(firstDir, file);
+
+				if (type === 'js') {
+					jsList.push(`<script type="text/javascript" src="${src}"></script>\n`);
+				} else if (type === 'css') {
+					cssList.push(`<link rel="stylesheet" href="${src}">\n`);
+				}
+			});
+			const content = `${tpl.slice(0, headIndex)}${cssList.join('')}${tpl.slice(headIndex, bodyIndex)}${jsList.join('')}${tpl.slice(bodyIndex)}`;
 
 			writeFileSync(destFile, content);
 		}
