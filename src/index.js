@@ -54,7 +54,14 @@ export default (opt = {}) => {
 			traverse(firstDir, fileList);
 
 			if (Array.isArray(externals)) {
-				fileList.splice(fileList.length, 0, ...externals);
+        let firstBundle = 0;
+        for (const node of externals) {
+          if (node.pos === 'before') {
+            fileList.splice(firstBundle++, 0, node);
+          } else {
+            fileList.splice(fileList.length, 0, node);
+          }
+        }
 			}
 
 			fileList.forEach(node => {
