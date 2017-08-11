@@ -78,8 +78,10 @@ export default {
       filename: 'index.html',
       format: 'es',
       externals: [
-        { type: 'js', file: '//www.test.pajkdc.com/hybridjs/pajk_hybrid_index.0.1.4.js' },
-        { type: 'js', file: '//beacon.test.pajkdc.com/js/beacon.js' }
+        // the type can be 'js' or 'css', and you can pass a pos feild to control the the position in which the file will be inserted.
+        // the xxxx1.js will be inserted before the bundle, and the xxxx2.js will be inserted after the bundle as default
+        { type: 'js', file: '//xxxx1.js', pos: 'before' },
+        { type: 'js', file: '//xxxx2.js' }
       ]
     })
   ]
