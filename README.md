@@ -80,7 +80,8 @@ export default {
       externals: [
         // the type can be 'js' or 'css', 
         // and you can pass a pos feild to control the the position in which the file will be inserted.
-        // the xxxx1.js will be inserted before the bundle, and the xxxx2.js will be inserted after the bundle as default
+        // the xxxx1.js will be inserted before the bundle, 
+        // and the xxxx2.js will be inserted after the bundle as default
         { type: 'js', file: '//xxxx1.js', pos: 'before' },
         { type: 'js', file: '//xxxx2.js' }
       ]
