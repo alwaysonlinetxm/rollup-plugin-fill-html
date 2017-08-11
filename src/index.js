@@ -55,13 +55,13 @@ export default (opt = {}) => {
 
 			if (Array.isArray(externals)) {
         let firstBundle = 0;
-        for (const node of externals) {
+        externals.forEach(function(node) {
           if (node.pos === 'before') {
             fileList.splice(firstBundle++, 0, node);
           } else {
             fileList.splice(fileList.length, 0, node);
           }
-        }
+        })
 			}
 
 			fileList.forEach(node => {
