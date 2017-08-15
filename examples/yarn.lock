@@ -780,9 +780,9 @@ rimraf@2, rimraf@^2.5.1, rimraf@^2.6.1:
   dependencies:
     glob "^7.0.5"
 
-rollup-plugin-fill-html@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/rollup-plugin-fill-html/-/rollup-plugin-fill-html-1.0.2.tgz#91a2363fbddfaaa4f47d929fa40f16624543fb33"
+rollup-plugin-fill-html@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-fill-html/-/rollup-plugin-fill-html-1.0.5.tgz#a95cb53dbde4375eec781ec150618284948d9af5"
   dependencies:
     hasha "^3.0.0"
 
