@@ -29,17 +29,17 @@ export default (opt = {}) => {
 		name: 'html',
 		onwrite(config, data) {
 			const tpl = readFileSync(template).toString();
-			const { dest, targets } = config;
+			const { file, targets } = config;
 			const fileList = [];
 			let destPath = '';
 
-			if (dest) {
+			if (file) {
 				// relative('./', dest) will not be equal to dest when dest is a absolute path
-				destPath = relative('./', dest);
+				destPath = relative('./', file);
 			} else if (targets) {
 				for (let i = 0; i < targets.length; i++) {
 					if (format === targets[i].format) {
-						destPath = relative('./', targets[i].dest);
+						destPath = relative('./', targets[i].file);
 					}
 				}
 			}
@@ -54,14 +54,14 @@ export default (opt = {}) => {
 			traverse(firstDir, fileList);
 
 			if (Array.isArray(externals)) {
-        let firstBundle = 0;
-        externals.forEach(function(node) {
-          if (node.pos === 'before') {
-            fileList.splice(firstBundle++, 0, node);
-          } else {
-            fileList.splice(fileList.length, 0, node);
-          }
-        })
+				let firstBundle = 0;
+				externals.forEach(function(node) {
+					if (node.pos === 'before') {
+						fileList.splice(firstBundle++, 0, node);
+					} else {
+						fileList.splice(fileList.length, 0, node);
+					}
+				})
 			}
 
 			fileList.forEach(node => {
