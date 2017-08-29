@@ -29,19 +29,13 @@ export default (opt = {}) => {
 		name: 'html',
 		onwrite(config, data) {
 			const tpl = readFileSync(template).toString();
-			const { file, targets } = config;
+			const { file } = config;
 			const fileList = [];
 			let destPath = '';
 
 			if (file) {
 				// relative('./', dest) will not be equal to dest when dest is a absolute path
 				destPath = relative('./', file);
-			} else if (targets) {
-				for (let i = 0; i < targets.length; i++) {
-					if (format === targets[i].format) {
-						destPath = relative('./', targets[i].file);
-					}
-				}
 			}
 
 			const firstDir = destPath.slice(0, destPath.indexOf(pathSeperator));
