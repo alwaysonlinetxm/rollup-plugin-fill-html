@@ -67,15 +67,11 @@ import html from 'rollup-plugin-fill-html';
 
 export default {
   entry: 'src/index.js',
-  target: [
-    { format: 'cjs', dest: 'dist/index.cjs.js' },
-    { format: 'es', dest: 'dist/index.es.js' }
-  ],
+  dest: 'dist/bundle.js',,
   plugins: [
     html({
       template: 'src/index.html',
       filename: 'index.html',
-      format: 'es',
       externals: [
         // the type can be 'js' or 'css', 
         // and you can pass a pos feild to control the the position in which the file will be inserted.
@@ -89,7 +85,7 @@ export default {
 };
 ```
 
-then the `dist/index.es.js` will be inserted into the result file.
+then the `dist/bundle.js` will be inserted into the result file.
 
 ## License
 
