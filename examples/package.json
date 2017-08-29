@@ -9,7 +9,7 @@
     "start": "rollup -c -w"
   },
   "devDependencies": {
-    "rollup": "^0.43.0",
+    "rollup": "^0.48.0",
     "rollup-plugin-fill-html": "^1.0.5",
     "rollup-watch": "^4.0.0"
   }
