@@ -23,7 +23,7 @@ function isURL(url){
 }
 
 export default (opt = {}) => {
-	const { template, filename, format, externals } = opt;
+	const { template, filename, externals } = opt;
 
 	return {
 		name: 'html',
