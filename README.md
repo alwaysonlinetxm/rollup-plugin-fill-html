@@ -56,7 +56,6 @@ You can pass an option to the `html()` just like above, and there are some optio
 
 - template: Required. the path of the template file, it should be a html file.
 - filename: Optional. the name of the result html file, if omitted, the template name will be used.
-- format: Optional. when the rollup.config.js use field 'target', then you need to set the format to choose which bundle should be inserted into the result file.
 - externals: Optional. a list of files which will be insert into the resule html. The file should be a valid url.
 
 
