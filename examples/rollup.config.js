@@ -10,7 +10,11 @@ export default {
   plugins: [
     html({
       template: 'src/index.html',
-      filename: 'index.html'
+      filename: 'index.html',
+      // inject: 'head',
+      externals: [
+        { type: 'js', file: 'https://test.js', inject: 'head' }
+      ]
     })
   ]
 };

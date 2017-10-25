@@ -6,7 +6,8 @@
   "author": "alwaysonlinrtxm",
   "license": "MIT",
   "scripts": {
-    "start": "rollup -c -w"
+    "clean": "rm -r ./dist",
+    "start": "yarn run clean && rollup -c -w"
   },
   "devDependencies": {
     "rollup": "^0.48.0",

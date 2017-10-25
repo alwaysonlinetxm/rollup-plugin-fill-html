@@ -9,11 +9,11 @@ The 1.0.3 version has been supported to insert css file and external url, you sh
 ## Installation
 
     yarn add --dev rollup-plugin-fill-html
-    
-or 
+
+or
 
     npm install -D rollup-plugin-fill-html
-    
+
 ## Usage
 
 In the rollup.config.js:
@@ -73,9 +73,9 @@ export default {
       template: 'src/index.html',
       filename: 'index.html',
       externals: [
-        // the type can be 'js' or 'css', 
-        // and you can pass a pos feild to control the the position in which the file will be inserted.
-        // the xxxx1.js will be inserted before the bundle, 
+        // the type can be 'js' or 'css',
+        // and you can pass a pos field to control the the position in which the file will be inserted.
+        // the xxxx1.js will be inserted before the bundle,
         // and the xxxx2.js will be inserted after the bundle as default
         { type: 'js', file: '//xxxx1.js', pos: 'before' },
         { type: 'js', file: '//xxxx2.js' }

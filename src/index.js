@@ -1,6 +1,7 @@
 import { statSync, readFileSync, writeFileSync, readdirSync, unlinkSync } from 'fs';
 import { relative, basename, sep as pathSeperator } from 'path';
 import hasha from 'hasha';
+import cheerio from 'cheerio';
 
 function traverse(dir, list) {
 	const dirList = readdirSync(dir);
@@ -23,27 +24,21 @@ function isURL(url){
 }
 
 export default (opt = {}) => {
-	const { template, filename, externals } = opt;
+	const { template, filename, externals, inject } = opt;
 
 	return {
 		name: 'html',
 		onwrite(config, data) {
 			const tpl = readFileSync(template).toString();
+			const $ = cheerio.load(readFileSync(template).toString());
+			const head = $('head');
+			const body = $('body');
 			const { file } = config;
 			const fileList = [];
-			let destPath = '';
-
-			if (file) {
-				// relative('./', dest) will not be equal to dest when dest is a absolute path
-				destPath = relative('./', file);
-			}
-
+			// relative('./', dest) will not be equal to dest when dest is a absolute path
+			const destPath = relative('./', file);
 			const firstDir = destPath.slice(0, destPath.indexOf(pathSeperator));
-			const destFile = `${firstDir}/${filename || basename(tpl)}`;
-			const headIndex = tpl.indexOf('</head>');
-			const bodyIndex = tpl.indexOf('</body>');
-			const jsList = [];
-			const cssList = [];
+			const destFile = `${firstDir}/${filename || basename(template)}`;
 
 			traverse(firstDir, fileList);
 
@@ -80,14 +75,18 @@ export default (opt = {}) => {
 				const src = isURL(file) ? file : relative(firstDir, file);
 
 				if (type === 'js') {
-					jsList.push(`<script type="text/javascript" src="${src}"></script>\n`);
+					const script = `<script type="text/javascript" src="${src}"></script>\n`;
+					// node.inject will cover the inject
+					if (node.inject === 'head' || inject === 'head') {
+						head.append(script)
+					} else {
+						body.append(script);
+					}
 				} else if (type === 'css') {
-					cssList.push(`<link rel="stylesheet" href="${src}">\n`);
+					head.append(`<link rel="stylesheet" href="${src}">\n`);
 				}
 			});
-			const content = `${tpl.slice(0, headIndex)}${cssList.join('')}${tpl.slice(headIndex, bodyIndex)}${jsList.join('')}${tpl.slice(bodyIndex)}`;
-
-			writeFileSync(destFile, content);
+			writeFileSync(destFile, $.html());
 		}
 	};
 }
