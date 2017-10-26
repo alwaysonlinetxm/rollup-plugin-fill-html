@@ -29,7 +29,6 @@ export default (opt = {}) => {
 	return {
 		name: 'html',
 		onwrite(config, data) {
-			const tpl = readFileSync(template).toString();
 			const $ = cheerio.load(readFileSync(template).toString());
 			const head = $('head');
 			const body = $('body');

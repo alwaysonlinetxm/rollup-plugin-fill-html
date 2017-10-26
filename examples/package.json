@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "clean": "rm -r ./dist",
-    "start": "yarn run clean && rollup -c -w"
+    "start": "rollup -c -w"
   },
   "devDependencies": {
     "rollup": "^0.48.0",
