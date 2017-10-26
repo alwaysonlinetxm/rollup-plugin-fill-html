@@ -1,7 +1,8 @@
 import { statSync, readFileSync, writeFileSync, readdirSync, unlinkSync } from 'fs';
 import { relative, basename, sep as pathSeperator } from 'path';
 import hasha from 'hasha';
-import cheerio from 'cheerio';
+// import cheerio from 'cheerio';
+const cheerio = require('cheerio');
 
 function traverse(dir, list) {
 	const dirList = readdirSync(dir);
