@@ -25,7 +25,7 @@ function isURL(url){
 }
 
 export default (opt = {}) => {
-	const { template, filename, externals, inject } = opt;
+	const { template, filename, externals, inject, defaultmode } = opt;
 
 	return {
 		name: 'html',
@@ -75,10 +75,14 @@ export default (opt = {}) => {
 				const src = isURL(file) ? file : relative(firstDir, file);
 
 				if (type === 'js') {
-					const script = `<script type="text/javascript" src="${src}"></script>\n`;
+					let attrs = {src: src};
+					let mode = node.mode || defaultmode;
+					if (mode) attrs.type = mode;
+					attrs = Object.entries(([key, val]) => `${key}="${val}"`).join(' ');
+					const script = `<script ${attrs}></script>\n`;
 					// node.inject will cover the inject
 					if (node.inject === 'head' || inject === 'head') {
-						head.append(script)
+						head.append(script);
 					} else {
 						body.append(script);
 					}
