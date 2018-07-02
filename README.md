@@ -7,7 +7,7 @@ Fill the html template with the bundle js..
 Rollup >= 0.48 has been supported since v1.0.6. So if you use rollup < 0.48,
 please choose the older version.
 
-The 1.0.3 version has supported to insert css file and external url, you should
+The 1.0.3 version has support to insert css file and external url, you should
 know that rollup-plugin-fill-html will scan the dest directory and find out
 `all the js and css files`, and then insert these files into the result html.
 So you'd better to clean the dest directory before rebuilding, and I think you
