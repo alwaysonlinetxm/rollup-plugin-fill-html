@@ -90,7 +90,7 @@ export default (opt = {}) => {
 					head.append(`<link rel="stylesheet" href="${src}">\n`);
 				}
 			});
-			writeFileSync(destFile, $.html());
+			writeFileSync(destFile, $.html({ decodeEntities: false }));
 		}
 	};
 }
